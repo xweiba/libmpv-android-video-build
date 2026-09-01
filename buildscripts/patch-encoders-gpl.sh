@@ -18,4 +18,15 @@ for dep_path in "${PATCHES[@]}"; do
     fi
 done
 
+# The custom-I/O bridge is shared by all flavors; encoder-specific patches stay
+# isolated above while these generic patches retain one source of truth.
+for patch in \
+    patches/ffmpeg/ffmpeg-segmented-custom-io.patch \
+    patches/mpv/nested-stream-callback.patch; do
+    dep=$(basename "$(dirname "$patch")")
+    cd "deps/$dep"
+    git apply "$ROOT/$patch"
+    cd "$ROOT"
+done
+
 exit 0
