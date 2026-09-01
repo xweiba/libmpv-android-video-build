@@ -55,6 +55,15 @@ index 71f5d76..9d60017 100644
      if (ret >= 0) {
          // update cookies on http response with setcookies.
          char *new_cookies = NULL;
+@@ -463,7 +474,7 @@ static int open_url(AVFormatContext *s, AVIOContext **pb, const char *url,
+     av_dict_free(&tmp);
+ 
+     if (is_http)
+-        *is_http = av_strstart(proto_name, "http", NULL);
++        *is_http = proto_name != NULL && av_strstart(proto_name, "http", NULL);
+ 
+     return ret;
+ }
 @@ -1234,7 +1245,10 @@ static int parse_manifest(AVFormatContext *s, const char *url, AVIOContext *in)
          close_in = 1;
  
