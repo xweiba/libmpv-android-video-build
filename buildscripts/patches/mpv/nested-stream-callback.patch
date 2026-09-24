@@ -116,7 +116,7 @@ index 7013dbd7d..844608b90 100644
      int r = priv->default_io_open(s, pb, url, flags, options);
      if (r >= 0) {
          if (options)
-@@ -959,7 +1045,13 @@ static int nested_io_close2(struct AVFormatContext *s, AVIOContext *pb)
+@@ -959,7 +1045,14 @@ static int nested_io_close2(struct AVFormatContext *s, AVIOContext *pb)
  
      for (int n = 0; n < priv->num_nested; n++) {
          if (priv->nested[n].id == pb) {
@@ -124,9 +124,35 @@ index 7013dbd7d..844608b90 100644
              MP_TARRAY_REMOVE_AT(priv->nested, priv->num_nested, n);
 +            if (stream) {
 +                free_stream(stream);
++                av_freep(&pb->buffer);
 +                avio_context_free(&pb);
 +                return 0;
 +            }
              break;
          }
      }
+@@ -1416,7 +1509,24 @@ static void demux_close_lavf(demuxer_t *demuxer)
+     lavf_priv_t *priv = demuxer->priv;
+     if (priv) {
+         // This will be a dangling pointer; but see below.
+         AVIOContext *leaking = priv->avfc ? priv->avfc->pb : NULL;
++        // HLS bypasses io_close2 for its main playlist. avio_close() assumes
++        // opaque is a URLContext, but this AVIOContext owns an mpv stream.
++        for (int n = 0; priv->avfc && n < priv->num_nested; n++) {
++            if (priv->nested[n].id == leaking && priv->nested[n].stream) {
++                priv->avfc->flags |= AVFMT_FLAG_CUSTOM_IO;
++                break;
++            }
++        }
+         avformat_close_input(&priv->avfc);
++        for (int n = 0; n < priv->num_nested; n++) {
++            if (priv->nested[n].id == leaking && priv->nested[n].stream) {
++                free_stream(priv->nested[n].stream);
++                av_freep(&priv->nested[n].id->buffer);
++                avio_context_free(&priv->nested[n].id);
++                MP_TARRAY_REMOVE_AT(priv->nested, priv->num_nested, n);
++                break;
++            }
++        }
+         // The ffmpeg garbage breaks its own API yet again: hls.c will call
+         // io_open on the main playlist, but never calls io_close. This happens

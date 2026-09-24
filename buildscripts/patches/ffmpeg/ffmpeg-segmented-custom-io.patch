@@ -76,7 +76,18 @@ index 71f5d76..9d60017 100644
          av_dict_free(&opts);
          if (ret < 0)
              return ret;
-@@ -2354,6 +2368,8 @@ static const AVOption dash_options[] = {
+@@ -1378,6 +1392,9 @@ static int parse_manifest(AVFormatContext *s, const char *url, AVIOContext *in)
+     av_bprint_finalize(&buf, NULL);
+     if (close_in) {
+-        avio_close(in);
++        if (!avio_find_protocol_name(url) && c->allow_custom_io)
++            ff_format_io_close(s, &in);
++        else
++            avio_close(in);
+     }
+     return ret;
+ }
+@@ -2354,6 +2371,8 @@ static const AVOption dash_options[] = {
          OFFSET(allowed_extensions), AV_OPT_TYPE_STRING,
          {.str = "aac,m4a,m4s,m4v,mov,mp4,webm,ts"},
          INT_MIN, INT_MAX, FLAGS},
