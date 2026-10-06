@@ -222,6 +222,10 @@ sed -i -e 's/#define FFMPEG_CONFIGURATION.*/#define FFMPEG_CONFIGURATION ""/' ..
 	\
 	--enable-filter=overlay \
 	--enable-filter=equalizer \
+	--enable-filter=astats \
+	--enable-filter=aresample \
+	--enable-filter=aformat \
+	--enable-filter=anull \
 	\
 	--enable-protocol=async \
 	--enable-protocol=cache \
