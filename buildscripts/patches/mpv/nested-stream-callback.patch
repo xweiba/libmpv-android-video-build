@@ -1,5 +1,5 @@
 diff --git a/demux/demux_lavf.c b/demux/demux_lavf.c
-index 7013dbd7d..844608b90 100644
+index 7013dbd7dc..c72a5b796a 100644
 --- a/demux/demux_lavf.c
 +++ b/demux/demux_lavf.c
 @@ -54,6 +54,7 @@
@@ -131,8 +131,7 @@ index 7013dbd7d..844608b90 100644
              break;
          }
      }
-@@ -1416,7 +1509,24 @@ static void demux_close_lavf(demuxer_t *demuxer)
-     lavf_priv_t *priv = demuxer->priv;
+@@ -1417,7 +1510,33 @@ static void demux_close_lavf(demuxer_t *demuxer)
      if (priv) {
          // This will be a dangling pointer; but see below.
          AVIOContext *leaking = priv->avfc ? priv->avfc->pb : NULL;
@@ -154,5 +153,51 @@ index 7013dbd7d..844608b90 100644
 +                break;
 +            }
 +        }
++        // Callback streams FFmpeg never closed (opening failed or was
++        // cancelled midway) stay leaked like any nested connection, but their
++        // cancel must not outlive this demuxer as a slave of demuxer->cancel:
++        // destroying that parent with slaves attached aborts in
++        // thread_tools.c cancel_destroy (assertion "!c->slaves.head").
++        for (int n = 0; n < priv->num_nested; n++) {
++            if (priv->nested[n].stream)
++                stream_cb_detach_cancel(priv->nested[n].stream);
++        }
          // The ffmpeg garbage breaks its own API yet again: hls.c will call
          // io_open on the main playlist, but never calls io_close. This happens
+         // to work out for us (since we don't really use custom I/O), but it's
+diff --git a/stream/stream.h b/stream/stream.h
+index fb62fdd1e4..fe0f6c179c 100644
+--- a/stream/stream.h
++++ b/stream/stream.h
+@@ -244,6 +244,7 @@ struct bstr stream_read_file2(const char *filename, void *talloc_ctx,
+ 
+ int stream_control(stream_t *s, int cmd, void *arg);
+ void free_stream(stream_t *s);
++void stream_cb_detach_cancel(struct stream *stream);
+ 
+ struct stream_open_args {
+     struct mpv_global *global;
+diff --git a/stream/stream_cb.c b/stream/stream_cb.c
+index 27e04a90b7..4c346e645b 100644
+--- a/stream/stream_cb.c
++++ b/stream/stream_cb.c
+@@ -99,6 +99,19 @@ static int open_cb(stream_t *stream)
+     return STREAM_OK;
+ }
+ 
++extern const stream_info_t stream_info_cb;
++
++// Unhook a callback stream's cancel from its parent without closing it. For
++// streams the owner deliberately leaks: the parent may be destroyed first.
++void stream_cb_detach_cancel(struct stream *stream)
++{
++    if (!stream || stream->info != &stream_info_cb)
++        return;
++    struct priv *p = stream->priv;
++    if (p && p->cancel)
++        mp_cancel_set_parent(p->cancel, NULL);
++}
++
+ const stream_info_t stream_info_cb = {
+     .name = "stream_callback",
+     .open = open_cb,

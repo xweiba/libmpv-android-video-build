@@ -226,6 +226,10 @@ sed -i -e 's/#define FFMPEG_CONFIGURATION.*/#define FFMPEG_CONFIGURATION ""/' ..
 	--enable-filter=aresample \
 	--enable-filter=aformat \
 	--enable-filter=anull \
+	--enable-filter=asplit \
+	--enable-filter=pan \
+	--enable-filter=bandpass \
+	--enable-filter=amerge \
 	\
 	--enable-protocol=async \
 	--enable-protocol=cache \
