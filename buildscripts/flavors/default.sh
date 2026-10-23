@@ -230,6 +230,10 @@ sed -i -e 's/#define FFMPEG_CONFIGURATION.*/#define FFMPEG_CONFIGURATION ""/' ..
 	--enable-filter=bandpass \
 	--enable-filter=amerge \
 	\
+	--enable-muxer=mp4 \
+	--enable-muxer=mov \
+	--enable-bsf=aac_adtstoasc \
+	\
 	--enable-protocol=async \
 	--enable-protocol=cache \
 	--enable-protocol=crypto \

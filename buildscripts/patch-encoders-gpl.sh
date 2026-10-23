@@ -22,6 +22,7 @@ done
 # isolated above while these generic patches retain one source of truth.
 for patch in \
     patches/ffmpeg/ffmpeg-segmented-custom-io.patch \
+    patches/ffmpeg/ffmpeg-segmented-io-cancel.patch \
     patches/mpv/nested-stream-callback.patch; do
     dep=$(basename "$(dirname "$patch")")
     cd "deps/$dep"
