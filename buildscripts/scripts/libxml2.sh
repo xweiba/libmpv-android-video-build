@@ -12,7 +12,7 @@ else
 	exit 255
 fi
 
-[ -f configure ] || ./autogen.sh
+[ -f configure ] || NOCONFIGURE=1 ./autogen.sh
 
 mkdir -p _build$ndk_suffix
 cd _build$ndk_suffix
@@ -24,8 +24,6 @@ cd _build$ndk_suffix
     --enable-static \
     --with-minimum \
     --with-threads \
-    --with-tree \
-    --without-lzma \
 
 make -j$cores
 make DESTDIR="$prefix_dir" install

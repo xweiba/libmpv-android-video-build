@@ -3,20 +3,20 @@
 ## Dependency versions
 
 v_sdk=9123335_latest
-v_ndk=27.2.12479018
+v_ndk=30.0.16248370
 v_sdk_build_tools=34.0.0
 
-v_libass=0.17.1
-v_harfbuzz=7.2.0
-v_fribidi=1.0.12
-v_freetype=2-13-0
-v_mbedtls=3.4.0
-v_dav1d=1.2.0
-v_libxml2=2.10.3
-v_ffmpeg=7.1.3
-v_mpv=32a164cc017acab50389f2194f720ccfd0b01a28
-v_libplacebo=d4624cbfb37fdef337a7da5794b66202671a89cd
-v_lcms2=lcms2.17
+v_libass=0.17.5
+v_harfbuzz=14.6.0
+v_fribidi=1.0.17
+v_freetype=2-15-0
+v_mbedtls=3.6.7
+v_dav1d=1.5.4
+v_libxml2=2.15.4
+v_ffmpeg=24e860f6d3c4f2ebae65ed7649e2a8860d512879
+v_mpv=c3ac7f39514c7f45bc38a18e66887240539ee33c
+v_libplacebo=1dd022687b9ac1dd996855b51433bf770ae76aab
+v_lcms2=lcms2.19.1
 v_libogg=1.3.5
 v_libvorbis=1.3.7
 v_libvpx=1.13.0
@@ -26,16 +26,15 @@ v_media_kit_android_helper=b768ce102cfa9b5ddec618bb939d689d1b0899fa
 v_gas_preprocessor=ac1836309c2e77023c228b7184485597286289d3
 
 ## Pinned commit SHAs for tag-based clones
-sha_mbedtls=1873d3bfc2da771672bd8e7e8f41f57e0af77f33
-sha_dav1d=676a864a11af2c0522e1f992e770589543894686
-sha_libxml2=f507d167f1755b7eaea09fb1a44d29aab828b6d1
+sha_mbedtls=068ff080b369adfac81509f9b57b2afabaf82dc5
+sha_dav1d=54706fc6bc0cdecab7e9593974a4039cc038fca7
+sha_libxml2=96498992efa48d52b0e8b83058bd88dbdaf153c1
 sha_libvpx=d6eb9696aa72473c1a11d34d928d35a3acc0c9a9
-sha_ffmpeg=f46e514491172d15bd74b4abb1814cd2f05a763e
-sha_freetype=de8b92dd7ec634e9e2b25ef534c54a3537555c11
-sha_fribidi=6428d8469e536bcbb6e12c7b79ba6659371c435a
-sha_harfbuzz=a321c4fee56b15247c10f9aa3db7e7ccb3b8173b
-sha_libass=e8ad72accd3a84268275a9385beb701c9284e5b3
-sha_lcms2=5176347635785e53ee5cee92328f76fda766ecc6
+sha_freetype=37515cf56ba3349656049edbed89ffc6f6466f2d
+sha_fribidi=b93119f5fdc7ea47672cc304c1455ffa6dfe7536
+sha_harfbuzz=c7a7457b7385f33178e8cf87615ca077a810bbe7
+sha_libass=4a05d8127f525943ebf45fdc6497c9e665947f0d
+sha_lcms2=21c582a594fe5279f90c0b93437c398f93bf62b0
 
 
 ## Dependency tree

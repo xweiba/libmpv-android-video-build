@@ -1,8 +1,8 @@
 diff --git a/include/mpv/client.h b/include/mpv/client.h
-index 85cff63bd5..e6aa1385d5 100644
+index f72a0e0a4..56f6da0e3 100644
 --- a/include/mpv/client.h
 +++ b/include/mpv/client.h
-@@ -1730,6 +1730,15 @@ MPV_EXPORT mpv_event *mpv_wait_event(mpv_handle *ctx, double timeout);
+@@ -1734,6 +1734,15 @@ MPV_EXPORT mpv_event *mpv_wait_event(mpv_handle *ctx, double timeout);
   */
  MPV_EXPORT void mpv_wakeup(mpv_handle *ctx);
  
@@ -18,7 +18,7 @@ index 85cff63bd5..e6aa1385d5 100644
  /**
   * Set a custom function that should be called when there are new events. Use
   * this if blocking in mpv_wait_event() to wait for new events is not feasible.
-@@ -2012,6 +2021,8 @@ MPV_DEFINE_SYM_PTR(mpv_wait_event)
+@@ -2013,6 +2022,8 @@ MPV_DEFINE_SYM_PTR(mpv_wait_event)
  #define mpv_wait_event pfn_mpv_wait_event
  MPV_DEFINE_SYM_PTR(mpv_wakeup)
  #define mpv_wakeup pfn_mpv_wakeup
@@ -28,7 +28,7 @@ index 85cff63bd5..e6aa1385d5 100644
  #define mpv_set_wakeup_callback pfn_mpv_set_wakeup_callback
  MPV_DEFINE_SYM_PTR(mpv_wait_async_requests)
 diff --git a/player/client.c b/player/client.c
-index e23b98b00f..7e8b4931bb 100644
+index 61c998dbb..6b947d3f5 100644
 --- a/player/client.c
 +++ b/player/client.c
 @@ -22,6 +22,8 @@
@@ -40,7 +40,7 @@ index e23b98b00f..7e8b4931bb 100644
  #include "common/common.h"
  #include "common/global.h"
  #include "common/msg.h"
-@@ -964,6 +966,11 @@ void mpv_wakeup(mpv_handle *ctx)
+@@ -966,6 +968,11 @@ void mpv_wakeup(mpv_handle *ctx)
      mp_mutex_unlock(&ctx->lock);
  }
  
